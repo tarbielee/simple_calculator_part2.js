@@ -1,55 +1,49 @@
-"use strict"
-let LAST =0;
+"use strict";
 class Calculator {
-    constructor(){
-        this.resultArray = []
-        this.memory_slot = []
-        
+  constructor() {
+    this.resultArray = [];
+    this.memory_slot = [];
+  }
+  add() {
+    let sum = 0;
+    for (let i = 0; i < arguments.length; i++) {
+      if(arguments[i] == "LAST"){
+        sum += this.last()
+      } else if(typeof arguments[i] === "string" && arguments[i].includes("SLOT_")) {
+        let numSlot = arguments[i].match(/\d+/g)
+        Number(numSlot)
+        sum += this.get_slot(numSlot)
+      } else
+      sum += arguments[i];
     }
-     
-    add() {
-        let sum = 0;
-
-        for(let i = 0; i < arguments.length; i++){
-            sum += arguments[i]
-        }
-        this.resultArray.push(sum)
-        return sum 
+    this.resultArray.push(sum);
+    return sum;
+  }
+  multiply() {
+    let product = 1;
+    for (let i = 0; i < arguments.length; i++) {
+      if(arguments[i] == "LAST"){
+        product *= this.last()
+      } else if(typeof arguments[i] === "string" && arguments[i].includes("SLOT_")) {
+        let numSlot = arguments[i].match(/\d+/g)
+        Number(numSlot)
+        product *= this.get_slot(numSlot)
+      } else
+      product *= arguments[i];
     }
-
-    multiply() {
-        let product = 1;
-
-        for( let i = 0; i < arguments.length; i++){
-            product *= arguments[i]
-        } 
-        this.resultArray.push(product)
-        return product
-    }
-
-    last() {
-        LAST = this.resultArray[this.resultArray.length - 1]
-        return LAST
-    }
-
-    set_slot(numSlot) {
-         numSlot = this.resultArray[numSlot - 1]
-        return numSlot
-    }
-
-    get_slot(numSlot) {
-        return set_slot()
-    }
-    
+    this.resultArray.push(product);
+    return product;
+  }
+  last() {
+    return this.resultArray[this.resultArray.length - 1];
+  }
+  set_slot(numSlot) {
+   this.memory_slot.push(this.resultArray[numSlot - 1])
+  }
+  get_slot(numSlot) {
+   return this.memory_slot[numSlot - 1]
+  }
 }
-
-let calc = new Calculator()
-calc.add(9,6)
-console.log(calc.last())
-console.log(calc.add(LAST,4,5))
-console.log(calc.resultArray)
-
-console.log(calc.get_slot())
-
+let calc = new Calculator();
 
 module.exports = Calculator;
